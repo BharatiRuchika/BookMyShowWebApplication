@@ -1,0 +1,33 @@
+{
+  "name": "book-my-show-back",
+  "version": "0.0.0",
+  "private": true,
+  "engines": {
+    "node": "14.x"
+  },
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cookie-parser": "~1.4.4",
+    "cors": "^2.8.5",
+    "debug": "~2.6.9",
+    "dotenv": "^16.0.3",
+    "express": "~4.16.1",
+    "http-errors": "~1.6.3",
+    "joi": "^17.4.2",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^6.0.13",
+    "morgan": "~1.9.1",
+    "multer": "^1.4.4",
+    "nodemailer": "^6.7.2",
+    "nodemailer-sendgrid-transport": "^0.2.0",
+    "pug": "2.0.0-beta11",
+    "razorpay": "^2.0.7",
+    "shortid": "^2.2.16"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  }
+}
