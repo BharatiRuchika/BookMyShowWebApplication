@@ -19,29 +19,34 @@ var showRouter = require('./routes/showTime');
 var mongo = require("./connection");
 mongo.connect();
 var app = express();
+app.use(express.json());
 const razorpay = new Razorpay({
 	key_id: 'rzp_test_OUcqumMZN9hmcK',
 	key_secret: 'XQZXWrwezMYQASzenfGW1Nu8'
 })
-app.use(function (req, res, next) {
-  res.setHeader('Access-Control-Allow-Origin', 'https://book-my-show-web-application.vercel.app/');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
-  res.setHeader('Access-Control-Allow-Credentials', true);
-  next();
-});
+app.use(cors({
+  origin: "https://book-my-show-web-application.vercel.app/",
+  credentials:true,
+  optionSuccessStatus:200
+}));
+// app.use(function (req, res, next) {
+//   res.setHeader('Access-Control-Allow-Origin', 'https://book-my-show-web-application.vercel.app/');
+//   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+//   res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+//   res.setHeader('Access-Control-Allow-Credentials', true);
+//   next();
+// });
 
 const corsOptions = {
-  origin: true,
-  credentials: true,
+  Credential: 'true',
 };
 app.options("*" , cors(corsOptions));
 app.use(cors(corsOptions));
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 app.use(logger('dev'));
-app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
