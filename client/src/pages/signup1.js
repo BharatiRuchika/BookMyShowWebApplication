@@ -97,7 +97,8 @@ if(res.data.error=="user doesnt exist"){
    console.log("formdata",data.get("photo"));
    const config={
      headers:{
-       'content-type':'multipart/form-data'
+       'content-type':'multipart/form-data',
+       'auth-token':`${token}`
      }
    }
    const url = "https://book-my-show-web-application.vercel.app/users/register";

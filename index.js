@@ -19,18 +19,24 @@ var showRouter = require('./routes/showTime');
 var mongo = require("./connection");
 mongo.connect();
 var app = express();
-app.use(cors({ credentials: true }));
 const razorpay = new Razorpay({
 	key_id: 'rzp_test_OUcqumMZN9hmcK',
 	key_secret: 'XQZXWrwezMYQASzenfGW1Nu8'
 })
 app.use(function (req, res, next) {
-  res.setHeader('Access-Control-Allow-Origin', 'https://book-my-show-web-application.vercel.app');
+  res.setHeader('Access-Control-Allow-Origin', 'https://book-my-show-web-application.vercel.app/');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
   res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
   res.setHeader('Access-Control-Allow-Credentials', true);
   next();
 });
+
+const corsOptions = {
+  origin: true,
+  credentials: true,
+};
+app.options("*" , cors(corsOptions));
+app.use(cors(corsOptions));
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
@@ -52,7 +58,7 @@ app.use("/admin",adminRouter);
 app.use((req,res,next)=>{
   console.log("im here");
   const token = req.headers["auth-token"];
-  console.log("token",token);
+  // console.log("token",token);
   if(token){
     console.log("im here also");
     try{

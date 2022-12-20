@@ -58,7 +58,6 @@ exports.upload =async(req,res)=>{
         }
         const salt = await bcrypt.genSaltSync();
         req.body.password = await bcrypt.hashSync(req.body.password,salt);
-// 
  console.log("password",req.body.password);
  const users = new userData({
     username:req.body.username,
