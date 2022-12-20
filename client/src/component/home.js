@@ -25,7 +25,7 @@ function UserHome(props){
         const token = localStorage.getItem("token");
         console.log("search called");
         console.log("search",search);
-        var response = await axios.get(`https://bookmyshowback.herokuapp.com/theater/searchtheaters/${search}`,{
+        var response = await axios.get(`https://book-my-show-web-application.vercel.app/theater/searchtheaters/${search}`,{
             headers:{
                 'auth-token':token
             }
@@ -36,7 +36,7 @@ function UserHome(props){
     const getTheaters = async()=>{
         const token = localStorage.getItem("token");
         console.log("token",token);
-       var res = await axios.get("https://bookmyshowback.herokuapp.com/theater/getTheaters",{
+       var res = await axios.get("https://book-my-show-web-application.vercel.app/theater/getTheaters",{
           headers:{
               'auth-token':token
           }

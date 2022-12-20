@@ -28,7 +28,7 @@ import axios from "axios";
     }
     useEffect(async() => {
         const token = localStorage.getItem("token");
-        var response = await axios.post("https://bookmyshowback.herokuapp.com/theater/sendmail",{
+        var response = await axios.post("https://book-my-show-web-application.vercel.app/theater/sendmail",{
             email,
             bookingdate,
             totalceats,

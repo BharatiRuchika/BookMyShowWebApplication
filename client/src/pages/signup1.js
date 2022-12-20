@@ -47,7 +47,7 @@ function Signup(props){
     }
     
    if(admin==true){
-     var res = await axios.post("https://bookmyshowback.herokuapp.com/admin/validateAdmin",{
+     var res = await axios.post("https://book-my-show-web-application.vercel.app/admin/validateAdmin",{
        email,password
      })
      console.log("res",res);
@@ -67,7 +67,7 @@ function Signup(props){
       History.push({pathname:"/adminpage"});
      }
    }else{
-var res = await axios.post("https://bookmyshowback.herokuapp.com/users/validateUser",{
+var res = await axios.post("https://book-my-show-web-application.vercel.app/users/validateUser",{
   email,password
 })
 console.log("res",res);
@@ -100,7 +100,7 @@ if(res.data.error=="user doesnt exist"){
        'content-type':'multipart/form-data'
      }
    }
-   const url = "https://bookmyshowback.herokuapp.com/users/register";
+   const url = "https://book-my-show-web-application.vercel.app/users/register";
    const res = await axios.post(url,data,config);
    console.log("res",res);
    if(res.data.response){

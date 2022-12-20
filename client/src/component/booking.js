@@ -11,7 +11,7 @@ export const Booking = (props) => {
     const mobile = props.mobile;
     const [userbookings, setuserbookings] = useState([]);
     useEffect(async() => {
-        var res = await axios.get(`https://bookmyshowback.herokuapp.com/movies/getbookings/${email}`,{
+        var res = await axios.get(`https://book-my-show-web-application.vercel.app/movies/getbookings/${email}`,{
             headers:{
                 'auth-token':token
             }

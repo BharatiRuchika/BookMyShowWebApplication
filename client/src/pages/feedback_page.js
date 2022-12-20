@@ -22,7 +22,7 @@ const Feedback = (props) => {
         if (name1 === "" || email1 === "" || feedback === "") {
             alert("please enter feedback");
         } else {
-            var res = await axios.post("https://bookmyshowback.herokuapp.com/theater/feedback",{name1,email,feedback},{
+            var res = await axios.post("https://book-my-show-web-application.vercel.app/theater/feedback",{name1,email,feedback},{
                 headers:{
                     'auth-token':token
                 }

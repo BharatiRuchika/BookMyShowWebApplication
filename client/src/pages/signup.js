@@ -44,7 +44,7 @@ function Signup(props){
       alert("enter email and password");
     }
    if(admin==true){
-     var res = await axios.post("http://localhost:3000/admin/validateAdmin",{
+     var res = await axios.post("https://book-my-show-web-application.vercel.app/admin/validateAdmin",{
        email,password
      })
      console.log("res",res);
@@ -63,7 +63,7 @@ function Signup(props){
       History.push({pathname:"/adminpage"});
      }
    }else{
-var res = await axios.post("http://localhost:3000/users/validateUser",{
+var res = await axios.post("https://book-my-show-web-application.vercel.app/users/validateUser",{
   email,password
 })
 console.log("res",res);
@@ -95,7 +95,7 @@ if(res.data.error=="user doesnt exist"){
        'content-type':'multipart/form-data'
      }
    }
-   const url = "http://localhost:3000/users/register";
+   const url = "https://book-my-show-web-application.vercel.app/users/register";
    const res = await axios.post(url,data,config);
    console.log("res",res);
    if(res.data.response){

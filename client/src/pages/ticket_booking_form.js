@@ -37,7 +37,7 @@ const Ticketbookingform = () => {
         const getShows = async()=>{
             const token = localStorage.getItem("token");
             console.log("token",token);
-            var res = await axios.get(`https://bookmyshowback.herokuapp.com/show/getshow/${moviename}`,{
+            var res = await axios.get(`https://book-my-show-web-application.vercel.app/show/getshow/${moviename}`,{
             headers:{
                 'auth-token':token
             }
@@ -60,7 +60,7 @@ const Ticketbookingform = () => {
             document.getElementById("notification").innerHTML = "<p class='alert-message'style='margin-bottom:0px;background:yellow;'>Please Select your Seats NOW!</p>";
        
         console.log("show",show);
-        var res = await axios.get(`https://bookmyshowback.herokuapp.com/movies/getceats/${moviename}/${show}/${bookingdate}`,{
+        var res = await axios.get(`https://book-my-show-web-application.vercel.app/movies/getceats/${moviename}/${show}/${bookingdate}`,{
             headers:{
                 'auth-token':token
             }
@@ -143,7 +143,7 @@ const Ticketbookingform = () => {
                 console.log(newticketcost,new_ceat);
                 var totalcost = newticketcost*new_ceat;
                 console.log("totalcost",totalcost);
-                var bookings_response = await axios.post("https://bookmyshowback.herokuapp.com/movies/bookings",{
+                var bookings_response = await axios.post("https://book-my-show-web-application.vercel.app/movies/bookings",{
                     fulldate,
                     username,
                     email,
@@ -161,7 +161,7 @@ const Ticketbookingform = () => {
                     }
                 })
                 console.log("bookings",bookings_response);
-                var ceats_response = await axios.post("https://bookmyshowback.herokuapp.com/movies/ceats",{
+                var ceats_response = await axios.post("https://book-my-show-web-application.vercel.app/movies/ceats",{
                     bookingdate,
                     moviename,
                     allSeatarray,

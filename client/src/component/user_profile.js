@@ -78,7 +78,7 @@ const Userprofile = (props) => {
                 </nav>
 
                 <div className="profile" style={{ fontFamily: 'sans-serif', textAlign: 'center', minWidth: '500px',marginRight:"200px", boxShadow: '0 0 10px rgba(0,0,0,0.2)', padding: '100px' }}>
-                    <img src={`https://bookmyshowback.herokuapp.com//${profile}`,{headers:localStorage.getItem("token")}} alt="Profile Image"  className="profile__image" style={{ width: '150px', height: '150px', objectFit: 'cover', borderRadius: '50%', margin: '0 auto 20px auto', display: 'block', marginTop: '-8%' }} />
+                    <img src={`https://book-my-show-web-application.vercel.app/${profile}`+","+{headers:localStorage.getItem("token")}} alt="Profile Image"  className="profile__image" style={{ width: '150px', height: '150px', objectFit: 'cover', borderRadius: '50%', margin: '0 auto 20px auto', display: 'block', marginTop: '-8%' }} />
                     <div className="profile__name" style={{ fontSize: '1.2em', fontWeight: 'bold' }}>{name}</div>
                     <br />
                     <div className="profile__title" style={{ marginBottom: '20px' }}>{email}</div>
