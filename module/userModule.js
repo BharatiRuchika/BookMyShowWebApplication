@@ -71,6 +71,7 @@ exports.upload =async(req,res)=>{
  res.send({response});
 }catch(err){
     console.log("err",err);
+    res.send(err);
 }
 }
 exports.validateUser = async(req,res)=>{
