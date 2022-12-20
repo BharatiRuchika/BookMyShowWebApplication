@@ -52,7 +52,7 @@ if(process.env.NODE_ENV==="production"){
   res.sendFile(path.join(__dirname,'client','build','index.html'))
 })
 }
-app.use('/', indexRouter);
+// app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use("/admin",adminRouter);
 app.use((req,res,next)=>{

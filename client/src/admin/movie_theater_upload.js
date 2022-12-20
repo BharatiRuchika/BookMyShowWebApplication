@@ -20,7 +20,7 @@ function Movie_theater(props){
     },[])
     const getTheaters = async()=>{
         const token = localStorage.getItem("token");
-      var res = await axios.get("https://bookmyshowback.herokuapp.com/theater/getTheaters",{
+      var res = await axios.get(" https://book-my-show-web-application.vercel.app/theater/getTheaters",{
           headers:{
               'auth-token':token
           }
@@ -37,7 +37,7 @@ function Movie_theater(props){
        
     const remove = async(id)=>{
         const token = localStorage.getItem("token");
-        var res = await axios.delete(`https://bookmyshowback.herokuapp.com/theater/deletetheater/${id}`,{
+        var res = await axios.delete(` https://book-my-show-web-application.vercel.app/theater/deletetheater/${id}`,{
             headers:{
                 'auth-token':token
             }
@@ -48,7 +48,7 @@ function Movie_theater(props){
         // this.setState({posts});
         settheaters(current_theaters);
         if(res.status==200){
-            var response = await axios.delete(`https://bookmyshowback.herokuapp.com/movies/deletemovie/${res.data._id}`,{
+            var response = await axios.delete(` https://book-my-show-web-application.vercel.app/movies/deletemovie/${res.data._id}`,{
                 headers:{
                     'auth-token':token
                 }

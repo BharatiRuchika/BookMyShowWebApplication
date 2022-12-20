@@ -19,7 +19,7 @@ const Movies = ()=>{
     async function getMovies(){
       var id = params.id;
       const token = localStorage.getItem("token");
-      var res = await axios.get(`https://bookmyshowback.herokuapp.com/movies/getmovies/${id}`,{
+      var res = await axios.get(` https://book-my-show-web-application.vercel.app/movies/getmovies/${id}`,{
           headers:{
               'auth-token':token
           }
@@ -30,7 +30,7 @@ const Movies = ()=>{
    const Remove=async(id)=>{
        console.log("deleteId",id);
        const token = localStorage.getItem("token");
-       var res = await axios.delete(`https://bookmyshowback.herokuapp.com/movies/deletemovie/${id}`,{
+       var res = await axios.delete(`https://book-my-show-web-application.vercel.app/movies/deletemovie/${id}`,{
            headers:{
                'auth-token':token
            }

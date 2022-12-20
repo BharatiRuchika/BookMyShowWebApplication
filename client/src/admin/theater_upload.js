@@ -11,7 +11,7 @@ function AddTheater(){
     const theaterUpload = async()=>{
         console.log(theatername,theaterowner);
         const token = localStorage.getItem("token");
-        var res = await axios.post("https://bookmyshowback.herokuapp.com/theater/addtheater",{
+        var res = await axios.post(" https://book-my-show-web-application.vercel.app/theater/addtheater",{
             theatername,theaterowner,theaterstate,theatercity
         },{
             headers:{

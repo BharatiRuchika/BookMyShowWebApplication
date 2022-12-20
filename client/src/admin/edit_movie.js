@@ -42,7 +42,7 @@ import { ConstructionOutlined } from '@mui/icons-material';
         async function getMovie(){
             const token = localStorage.getItem("token");
               var id = params.id;
-              var res = await axios.get(`https://bookmyshowback.herokuapp.com/movies/getmovie/${id}`,{
+              var res = await axios.get(` https://book-my-show-web-application.vercel.app/movies/getmovie/${id}`,{
                   headers:{
                       'auth-token':token
                   }
@@ -50,7 +50,7 @@ import { ConstructionOutlined } from '@mui/icons-material';
               console.log("res",res);
             if(res.status==200){
                 var movieId = res.data[0]._id;
-                var showres = await axios.get(`https://bookmyshowback.herokuapp.com/show/getshows/${movieId}`,{
+                var showres = await axios.get(` https://book-my-show-web-application.vercel.app/show/getshows/${movieId}`,{
                     headers:{
                         'auth-token':token
                     }
@@ -92,7 +92,7 @@ import { ConstructionOutlined } from '@mui/icons-material';
             } else {
                 var id = params.id;
                 var theaterId = params.theaterId
-                var res = await axios.put("https://bookmyshowback.herokuapp.com/movies/editmovie",{
+                var res = await axios.put(" https://book-my-show-web-application.vercel.app/movies/editmovie",{
                     id,theaterId,image,video,moviename,description,actorname,directorname,releasedate,outdate,ticketcost
                 },{
                     headers:{
@@ -104,7 +104,7 @@ import { ConstructionOutlined } from '@mui/icons-material';
                     var movieId = params.id;;
                     // console.log(res.data.response._id);
                     console.log("inpulist",inputList)
-                    var showres = await axios.put("https://bookmyshowback.herokuapp.com/show/editshows",{
+                    var showres = await axios.put(" https://book-my-show-web-application.vercel.app/show/editshows",{
                         inputList:inputList,movieId:movieId,previousinputList:previousinputList
                     },{
                         headers:{

@@ -18,7 +18,7 @@ const AdminBooking = () => {
             setprogress(!progress);
             console.log("bookingdate",bookingdate);
             console.log("username",username)
-            var response = await axios.get(`https://bookmyshowback.herokuapp.com/movies/getbookings/${bookingdate}/${username}`,{
+            var response = await axios.get(` https://book-my-show-web-application.vercel.app/movies/getbookings/${bookingdate}/${username}`,{
                 headers:{
                     'auth-token':token
                 }

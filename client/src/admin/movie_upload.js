@@ -40,7 +40,7 @@ import axios from "axios";
    },[])
    const getShows = async()=>{
     const token = localStorage.getItem("token");
-       var response = await axios.get(`https://bookmyshowback.herokuapp.com/show/getallshows/${params.id}`,{
+       var response = await axios.get(` https://book-my-show-web-application.vercel.app/show/getallshows/${params.id}`,{
            headers:{
                'auth-token':token
            }
@@ -80,7 +80,7 @@ import axios from "axios";
             if(flag==0){
             const token = localStorage.getItem("token");
             console.log("token",token);
-            var res = await axios.post("https://bookmyshowback.herokuapp.com/movies/postmovies",{
+            var res = await axios.post(" https://book-my-show-web-application.vercel.app/movies/postmovies",{
                 id,image,video,moviename,description,actorname,directorname,releasedate,outdate,ticketcost
             },{
                 headers:{
@@ -92,7 +92,7 @@ import axios from "axios";
 
                 var movieId = res.data.response._id;
                 console.log(res.data.response._id);
-                var showres = await axios.post("https://bookmyshowback.herokuapp.com/show/postshows",{
+                var showres = await axios.post(" https://book-my-show-web-application.vercel.app/show/postshows",{
                     inputList:inputList,movieId
                 },{
                     headers:{

@@ -19,7 +19,7 @@ const Retrievefeedback = (props) => {
     }, [])
     const getFeedback = async()=>{
         const token = localStorage.getItem("token");
-        var res =  await axios.get("https://bookmyshowback.herokuapp.com/movies/feedback",{
+        var res =  await axios.get(" https://book-my-show-web-application.vercel.app/movies/feedback",{
             headers:{
                 "auth-token":token
             }

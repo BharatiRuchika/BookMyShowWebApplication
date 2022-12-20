@@ -19,7 +19,7 @@ const TheaterMovies = ()=>{
     async function getMovies(){
       var id = params.id;
       const token = localStorage.getItem("token");
-      var res = await axios.get(`https://bookmyshowback.herokuapp.com/movies/getmovies/${id}`,{
+      var res = await axios.get(` https://book-my-show-web-application.vercel.app/movies/getmovies/${id}`,{
           headers:{
               'auth-token':token
           }

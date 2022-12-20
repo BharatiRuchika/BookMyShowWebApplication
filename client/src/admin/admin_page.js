@@ -20,7 +20,7 @@ function AdminHome(props){
         console.log("token",token);
        
 
-      var res = await axios.get("https://bookmyshowback.herokuapp.com/theater/getTheaters",{
+      var res = await axios.get(" https://book-my-show-web-application.vercel.app/theater/getTheaters",{
           headers:{
               'auth-token':token
           }

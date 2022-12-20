@@ -33,10 +33,10 @@ export default function Bookings() {
     const getUsers = async()=>{
       var id = params.id;
       var movie_name = params.moviename;
-      var show_res = await axios.get(`https://bookmyshowback.herokuapp.com/show/getshows/${id}`);
+      var show_res = await axios.get(` https://book-my-show-web-application.vercel.app/show/getshows/${id}`);
       console.log("res",show_res);
       setShows(show_res.data);
-      var users = await axios.get(`https://bookmyshowback.herokuapp.com/movies/getuserbookings/${movie_name}`);
+      var users = await axios.get(` https://book-my-show-web-application.vercel.app/movies/getuserbookings/${movie_name}`);
       console.log("users",users);
       setUsers(users.data);
 

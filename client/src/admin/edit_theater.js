@@ -16,7 +16,7 @@ function EditTheater(){
     const getTheaters = async()=>{
         const id = params.id;
         const token = localStorage.getItem("token");
-        var res = await axios.get(`https://bookmyshowback.herokuapp.com/theater/getTheater/${id}`,{
+        var res = await axios.get(` https://book-my-show-web-application.vercel.app/theater/getTheater/${id}`,{
             headers:{
                 'auth-token':token
             }
@@ -31,7 +31,7 @@ function EditTheater(){
         const id = params.id;
         const token = localStorage.getItem("token");
         console.log(theatername,theaterowner);
-        var res = await axios.put(`https://bookmyshowback.herokuapp.com/theater/edittheater/${id}`,{
+        var res = await axios.put(` https://book-my-show-web-application.vercel.app/theater/edittheater/${id}`,{
             theatername,theaterowner,theaterstate,theatercity
         },{
             headers:{
