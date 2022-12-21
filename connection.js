@@ -1,7 +1,7 @@
-exports.connect=()=>{
+exports.connect=async()=>{
     try{
         const mongoose = require("mongoose");
-        mongoose.connect("mongodb+srv://guvi:admin123@cluster0.bdpws.mongodb.net/BookMyShow?retryWrites=true&w=majority",{useNewUrlParser:true,useUnifiedTopology:true})
+        var con = await mongoose.connect(`${process.env.DB_LOCAL_URI}`,{useNewUrlParser:true,useUnifiedTopology:true})
     }catch(err){
         console.log(err);
         process.exit();
