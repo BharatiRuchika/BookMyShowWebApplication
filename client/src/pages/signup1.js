@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import {useHistory} from "react-router-dom";
 // import FileUpload from 'FileUpoad';
 import { connect } from 'react-redux';
-import {selectedProfile,selectedName,selectedEmail,selectedMobile} from "../Reducer/reducer";
+import {selectedProfile,selectedName,selectedEmail,selectedMobile,selectedUser} from "../Reducer/reducer";
 import validator from 'validator'
 import axios from "axios";
 import "../App.css";
@@ -13,23 +13,26 @@ function Signup(props){
 //    const [password,setpassword] = useState('');
 //    const [mobile,setmobile] = useState('');
    const [admin,setadmin] = useState(false);
- 
-   const [state,setState] = React.useState({
-    username:"",
-    email:"",
-    password:"",
-    mobile:"",
-    errors:{
+   const [avatarPreview,setAvatarPreview] = useState("/images/default_avatar.jpg");
+    const [avatar,setAvatar] = useState("");
+    const [user,setUser] = useState({
+      username:"",
+      email:"",
+      password:"",
+      mobile:"",
+  })
+  const [error,setError] = useState({
       username:"",
       email:"",
       password:"",
       mobile:"" 
-    }
   })
+  const {username,email,password,mobile} = user;
    const History = useHistory();
    const validEmailRegex = 
   RegExp(/^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i);
   const signIn = ()=>{
+    console.log("im in signin");
     var container = document.getElementById('container');
     container.classList.remove("right-panel-active");
   }
@@ -39,9 +42,11 @@ function Signup(props){
   }
   const handleLogin = async(e)=>{
     console.log("handlelogin called");
-    var email = state.email;
-    var password = state.password;
     e.preventDefault();
+    var email = user.email;
+    var password = user.password;
+    console.log('email',email);
+    console.log('password',password);
     if(email==="" || password===""){
       alert("enter email and password");
     }
@@ -58,11 +63,11 @@ function Signup(props){
        alert("admin doesnt exist");
      }else
      if(res.data.authToken){
-    
       props.selectedName(res.data.admin.name);
       props.selectedProfile(res.data.admin.image);
       props.selectedEmail(res.data.admin.email);
       props.selectedMobile(res.data.admin.mobile);
+      props.selectedUser(res.data.admin)
       localStorage.setItem("token",res.data.authToken);
       History.push({pathname:"/adminpage"});
      }
@@ -82,92 +87,110 @@ if(res.data.error=="user doesnt exist"){
     props.selectedProfile(res.data.user.image);
     props.selectedEmail(res.data.user.email);
     props.selectedMobile(res.data.user.mobile);
+    props.selectedUser(res.data.user)
     localStorage.setItem("token",res.data.authToken);
     History.push("/homepage");
  }
 }
   }
   const handleSubmit = async(e)=>{
-   e.preventDefault();
-   console.log("target",e.target);
-   const data = new FormData(e.target);
-   console.log("data",data);
-   data.append('photo',Profile);
-   console.log("formdata",data.get("email"));
-   console.log("formdata",data.get("photo"));
-   const config={
-     headers:{
-       'content-type':'multipart/form-data',
-      
-     }
+    e.preventDefault();
+    console.log("avatarPreview",avatarPreview)
+      const formData = new FormData();
+      formData.set("avatar",avatarPreview);
+      formData.set("username",username);
+      formData.set("email",email);
+      formData.set("password",password);
+      formData.set("mobile",mobile);
+      // dispatch(register(formData))
+   const data = {
+    username,
+    email,
+    password,
+    mobile,
+    avatar:avatarPreview
    }
-   const url = "https://book-my-show-web-application.vercel.app/users/register";
-   const res = await axios.post(url,data,config);
+  
+   const config={
+    headers: { "Content-Type": "multipart/form-data" },
+    }
+   const res = await axios.post("https://book-my-show-web-application.vercel.app/users/register",formData,config)
+  //  const url = "http://localhost:3001/users/register";
+  //  const res = await axios.post(url,data,config);
    console.log("res",res);
-   if(res.data.response){
+   if(res.status==200){
      alert("user register successfully");
      var container = document.getElementById('container');
      container.classList.remove("right-panel-active");
-    //  history.push("/");
+   
    }else{
      alert("user already exist");
    }
  }
- const handleChange = async({target:{name,value}})=>{
+ const handleChange = async(e)=>{
     console.log("handlechange called");
-    console.log("value",value);
-    let errors = state.errors;
-   
-    switch(name){
+    console.log("value",e.target.value);
+    switch(e.target.name){
       case "username":{
-        if(value.length==0){
-          errors.username = "name cant be empty";
+        if(e.target.value.length==0){
+          error.username = "name cant be empty";
         }else
-        if(value.length<5){
-          errors.username = 'name should be atleast 5 charaters long';
+        if(e.target.value.length<5){
+          error.username = 'name should be atleast 5 charaters long';
         }else{
-          errors.username = "";
+          error.username = "";
         }
         break;
       }
-     
       case "email":{
-        if(value.length==0){
-          errors.email = "email cant be empty";
+        if(e.target.value.length==0){
+          error.email = "email cant be empty";
         }else
-        errors.email =  validEmailRegex.test(value)
+        error.email =  validEmailRegex.test(e.target.value)
         ? ''
         : 'Email is not valid!';
         break;
       }
       case "mobile":{
-        if(value.length==0){
-          errors.mobile = "Mobile Nunber cant be empty";
+        if(e.target.value.length==0){
+          error.mobile = "Mobile Nunber cant be empty";
         }else
-        errors.mobile = '';
+        error.mobile = '';
         break;
       }
       case "password":{
-        if(value.length==0){
-          errors.password = "password cant be empty";
+        if(e.target.value.length==0){
+          error.password = "password cant be empty";
         }else
-        errors.password = validator.isStrongPassword(value, {
+        error.password = validator.isStrongPassword(e.target.value, {
           minLength: 8, minLowercase: 1,
           minUppercase: 1, minNumbers: 1, minSymbols: 1
         })?'':"password is weak";
-     
         break;
       }
     }
-    console.log("errors",errors);
-    setState({...state,[name]:value,errors:errors});
+    if(e.target.name === "avatar"){
+      console.log("im in avatar");
+      const reader = new FileReader();
+      console.log("image",e.target.files[0])
+      reader.readAsDataURL(e.target.files[0]);
+      reader.onload = ()=>{
+          if(reader.readyState == 2){
+              setAvatarPreview(reader.result);
+              setAvatar(reader.result);
+          }
+      }
+    }else{
+    setUser({...user,[e.target.name]:e.target.value});
+    setError({error})
   }
+}
    return(
      <div>
          <h2 style={{marginTop:"80px"}}>Movie Ticket Booking App</h2>
          <div class="container" id="container">
          <div class="form-container sign-up-container">
-             <form onSubmit={handleSubmit}>
+             <form onSubmit={handleSubmit} encType='multipart/form-data'>
              <div>
                 
                  </div> 
@@ -177,22 +200,38 @@ if(res.data.error=="user doesnt exist"){
                  </div>
                  <span>or use your email for registration</span>  
                 
-                 <input type="file" placeholder="Pick Image" onChange={(e) => setProfile(e.target.files[0])} />
+                 {/* <input type="file" placeholder="Pick Image" onChange={(e) => setProfile(e.target.files[0])} /> */}
                  
                  <input type="text" placeholder="name" name="username" id="name"
-                 value={state.username} onChange={handleChange}/>
-                  <span style={{color:'red'}}>{state.errors.username}</span>
+                 value={username} onChange={handleChange}/>
+
+                  <span style={{color:'red'}}>{error.username}</span>
                 <input type="email" placeholder="email" name="email" id="email"
-                value={state.email} onChange={handleChange}/> 
-                 <span style={{color:'red'}}>{state.errors.email}</span>
+                value={email} onChange={handleChange}/> 
+                 <span style={{color:'red'}}>{error.email}</span>
                 <input type="password" placeholder="password" name="password" id="password"
-               value={state.password} onChange={handleChange}/> 
-                <span style={{color:'red'}}>{state.errors.password}</span>
+               value={password} onChange={handleChange}/> 
+                <span style={{color:'red'}}>{error.password}</span>
                  <input type="text" placeholder="mobile" name="mobile" id="mobile"
                 
-                  value={state.mobile} onChange={handleChange}/>
-                  <span style={{color:'red'}}>{state.errors.mobile}</span>
-                 
+                  value={mobile} onChange={handleChange}/>
+                  <span style={{color:'red'}}>{error.mobile}</span>
+                  
+                                <label className='custom-file-label' htmlFor='customFile'>
+                                        Choose Avatar
+                                </label>
+                                <div className='custom-file'>
+                                    <input
+                                        type='file'
+                                        name='avatar'
+                                    className='custom-file-input'
+                                    id='customFile'
+                                    accept="image/*"
+                                    onChange={handleChange}
+                                    />
+                                    
+                                </div>
+                      
                  <button type="submit">Sign Up</button>
                
              </form>
@@ -203,9 +242,9 @@ if(res.data.error=="user doesnt exist"){
                   <h1>Sign in</h1>
                  
                   <span>or use your account</span>
-                  <input type="email" name="email" placeholder="email" value={state.email} onChange={handleChange}></input>
-                  <span style={{color:'red'}}>{state.errors.email}</span>
-                  <input type="password" name="password" placeholder="password" value={state.password} onChange={handleChange}></input>
+                  <input type="email" name="email" placeholder="email" value={email} onChange={handleChange}></input>
+                  <span style={{color:'red'}}>{error.email}</span>
+                  <input type="password" name="password" placeholder="password" value={password} onChange={handleChange}></input>
                 
                   <input type="checkbox" style={{ marginLeft: "-66%", width: "-webkit-fill-available" }} value={admin} onChange={(e) => setadmin(true)} /><a href="#" style={{ marginLeft: "-8%", marginTop: "-8%" }}>Pick If You Are Admin</a>
                   <button onClick={handleLogin}>Sign In</button>
@@ -230,4 +269,4 @@ if(res.data.error=="user doesnt exist"){
 </div>
    )
 }
-export default connect(null,{selectedProfile,selectedName,selectedEmail,selectedMobile})(Signup);
+export default connect(null,{selectedProfile,selectedName,selectedEmail,selectedMobile,selectedUser})(Signup);

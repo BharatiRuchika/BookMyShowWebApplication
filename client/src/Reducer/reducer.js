@@ -2,12 +2,14 @@ const initialState = {
     profile:"",
     name:"",
     email:"",
-    mobile:""
+    mobile:"",
+    user:"",
 }
 const SELECTED_PROFILE = "SELECTED_PROFILE"
 const SELECTED_NAME = "SELECTED_NAME"
 const SELECTED_EMAIL = "SELECTED_EMAIL"
 const SELECTED_MOBILE = "SELECTED_MOBILE"
+const SELECTED_USER = "SELECTED_USER"
 export default function reducer(state=initialState,action){
   switch(action.type){
 case SELECTED_PROFILE:
@@ -18,6 +20,8 @@ case SELECTED_EMAIL:
     return Object.assign({}, state, { email: action.payload }) 
 case SELECTED_MOBILE:
     return Object.assign({},state,{mobile:action.payload})
+    case SELECTED_USER:
+    return Object.assign({},state,{user:action.payload})
 default:
     return state
 }
@@ -44,5 +48,11 @@ export function selectedMobile(mobile){
     return {
         type:SELECTED_MOBILE,
         payload:mobile
+    }
+}
+export function selectedUser(user){
+    return {
+        type:SELECTED_USER,
+        payload:user
     }
 }

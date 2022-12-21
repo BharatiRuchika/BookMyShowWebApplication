@@ -7,6 +7,9 @@ var jwt = require("jsonwebtoken")
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var cors = require("cors");
+var cloudinary = require("cloudinary");
+var bodyParser = require('body-parser')
+const fileUpload = require('express-fileupload')
 const Razorpay = require('razorpay');
 // const fileupload = require("express-fileupload");
 var indexRouter = require('./routes/index');
@@ -20,35 +23,42 @@ var mongo = require("./connection");
 mongo.connect();
 var app = express();
 app.use(express.json());
+app.use(bodyParser.urlencoded())
 const razorpay = new Razorpay({
 	key_id: 'rzp_test_OUcqumMZN9hmcK',
 	key_secret: 'XQZXWrwezMYQASzenfGW1Nu8'
 })
 app.use(cors({
-  origin: "https://book-my-show-web-application.vercel.app/",
+  origin: "http://localhost:3000",
   credentials:true,
   optionSuccessStatus:200
 }));
-// app.use(function (req, res, next) {
-//   res.setHeader('Access-Control-Allow-Origin', 'https://book-my-show-web-application.vercel.app/');
-//   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-//   res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
-//   res.setHeader('Access-Control-Allow-Credentials', true);
-//   next();
-// });
+app.use(function (req, res, next) {
+  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+  res.setHeader('Access-Control-Allow-Credentials', true);
+  next();
+});
 
 const corsOptions = {
   Credential: 'true',
 };
 app.options("*" , cors(corsOptions));
 app.use(cors(corsOptions));
-
+console.log("cloudinaryname",process.env.CLOUDINARY_CLOUD_NAME);
 // view engine setup
+cloudinary.config({
+  cloud_name : process.env.CLOUDINARY_CLOUD_NAME,
+  api_key : process.env.CLOUDINARY_API_KEY,
+  api_secret : process.env.CLOUDINARY_API_SECRET  
+})
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 app.use(logger('dev'));
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(fileUpload());
 app.use(express.static(path.join(__dirname, 'public')));
 if(process.env.NODE_ENV==="production"){
   const path = require("path");

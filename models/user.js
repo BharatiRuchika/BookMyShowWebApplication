@@ -19,10 +19,20 @@ const userSchema = new Schema({
         minLength:10,
         type:Number
     },
-    image:{
-        type:String,
-        required:true
-    }
+    avatar: {
+        public_id: {
+            type: String,
+            required: true
+        },
+        url: {
+            type: String,
+            required: true
+        }
+    },
+    // image:{
+    //     type:String,
+    //     required:true
+    // }
 })
 const userModel = mongoose.model('User',userSchema,'user');
 module.exports = userModel;

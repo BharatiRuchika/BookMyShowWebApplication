@@ -6,48 +6,33 @@ var sendgridtransport = require("nodemailer-sendgrid-transport");
 var bcrypt = require('bcryptjs');
 const Joi = require("joi");
 const jwt = require("jsonwebtoken");
+
+var cloudinary = require("cloudinary");
 const { ObjectId } = require("mongodb");
 const transport = nodemailer.createTransport(sendgridtransport({
     auth:{
     api_key:"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"
     }
 }))
-const multerConfig = multer.diskStorage({
-    destination:(req,file,callback)=>{
-      callback(null,'public/')
-    },
-    filename:(req,file,callback)=>{
-        const ext = file.mimetype.split('/')[1];
-        callback(null,`image-${Date.now()}.${ext}`)
-    }
-})
-const isImage = (req,file,callback)=>{
-    if(file.mimetype.startsWith('image')){
-        callback(null,true)
-    }else{
-        callback(new Error('only image is allowed...'));
-    }
-}
-const upload = multer({
-    storage:multerConfig,
-    fileFilter:isImage
-})
 
-exports.uploadImage = upload.single('photo');
-exports.upload =async(req,res)=>{
+exports.register =async(req,res)=>{
+    console.log("body",req.body);
     try{
-        const schema = Joi.object({
-           username:Joi.string().required(),
-           email:Joi.string().email().required(),
-           password:Joi.string().required(),
-           mobile:Joi.number().min(10).required()
-        })
-        const {error} = await schema.validate(req.body);
-        console.log("error",error);
-        if(error){
-            console.log("im here");
-            return res.status(400).send({msg:error.details[0].message})
-        }
+        // const schema = Joi.object({
+        //    username:Joi.string().required(),
+        //    email:Joi.string().email().required(),
+        //    password:Joi.string().required(),
+        //    mobile:Joi.number().min(10).required()
+        // })
+        // const {error} = await schema.validate(req.body);
+        // console.log("error",error);
+        // if(error){
+        //     console.log("im here");
+        //     return res.status(400).send({msg:error.details[0].message})
+        // }
+
+        const { username, email, password,mobile } = req.body;
+
        var user = await userData.find({email:req.body.email})
        console.log("user",user.length);
        console.log("user",user);
@@ -56,19 +41,75 @@ exports.upload =async(req,res)=>{
             var errmsg = "user already exist";
             return res.send({errmsg:"already registerd"});
         }
-        const salt = await bcrypt.genSaltSync();
-        req.body.password = await bcrypt.hashSync(req.body.password,salt);
- console.log("password",req.body.password);
- const users = new userData({
-    username:req.body.username,
-    email:req.body.email,
-    password:req.body.password,
-    mobile:req.body.mobile,
-    image:req.file.filename
- })
- var response = await users.save();
- console.log("response",response);
- res.send({response});
+        
+
+//  const users = new userData({
+//     username:req.body.username,
+//     email:req.body.email,
+//     password:req.body.password,
+//     mobile:req.body.mobile,
+//     image:req.file.filename
+//  })
+//  var response = await users.save();
+//  console.log("response",response);
+//  res.send({response});
+const salt = await bcrypt.genSaltSync();
+req.body.password = await bcrypt.hashSync(req.body.password,salt);
+
+if (req.body.avatar == "/images/default_avatar.jpg") {
+    
+    const users = new userData({
+        username,
+        email,
+        password:req.body.password,
+        mobile,
+        avatar: {
+            public_id: "avatars/default_avatar_zvlo1q",
+            url: "https://res.cloudinary.com/daeuzh0zl/image/upload/v1641879724/default_avatar_wzezlf.jpg"
+        }
+     })
+     var response = await users.save();
+    // var user = await userData.create({
+    //     username,
+    //     email,
+    //     password,
+    //     mobile,
+    //     avatar: {
+    //         public_id: "avatars/default_avatar_zvlo1q",
+    //         url: "https://res.cloudinary.com/daeuzh0zl/image/upload/v1641879724/default_avatar_wzezlf.jpg"
+    //     }
+    // })
+} else {
+    console.log("im in else part");
+    console.log("password",password);
+    const result = await cloudinary.v2.uploader.upload(req.body.avatar, {
+        folder: "avatars",
+        width: 150,
+        crop: "scale"
+    })
+    // var user = await userData.create({
+    //     username,
+    //     email,
+    //     password,
+    //     mobile,
+    //     avatar: {
+    //         public_id: result.public_id,
+    //         url: result.secure_url
+    //     }
+    // })
+    const users = new userData({
+        username,
+        email,
+        password:req.body.password,
+        mobile,
+        avatar: {
+            public_id: result.public_id,
+            url: result.secure_url
+            }
+     })
+     var response = await users.save(); 
+}
+res.send({response});
 }catch(err){
     console.log("err",err);
     res.send(err);
@@ -83,6 +124,7 @@ exports.validateUser = async(req,res)=>{
         })
         var {error} = schema.validate(req.body);
         if(error){
+            console.log("error",error.details[0].message)
             return res.status(400).send({msg:error.details[0].message})
         }
         const user = await userData.findOne({email:req.body.email});
